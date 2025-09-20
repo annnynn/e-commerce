@@ -16,7 +16,7 @@ const ProductList = () => {
   }, []);
 
   return ( 
-    <div className="product-list">      
+    <div className="product-list flex flex-wrap justify-center">      
         {products.map((product) => (
           <div key={product.id}>
           <span>{product.name}</span>
