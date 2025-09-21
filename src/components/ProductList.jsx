@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import fetchProducts from "./utils/fetchProducts";
+import PriceRangeFilter from "./PriceRangeFilter";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -9,6 +10,7 @@ const ProductList = () => {
   const [meta, setMeta] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 10;
+  const [filteredPrice, setFilteredPrice] = useState([0, 1000]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -25,6 +27,7 @@ const ProductList = () => {
 
   return (
     <>
+    <PriceRangeFilter/>
       <div className="flex flex-wrap gap-4 justify-center">
         {products.map((product) => (
           <div key={product.id} >
