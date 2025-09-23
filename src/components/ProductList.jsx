@@ -4,18 +4,19 @@ import PriceRangeFilter from "./PriceRangeFilter";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  {
-    /**დამატებითი ინფო(ამშემთხვევაში ფეიჯები) */
-  }
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [meta, setMeta] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 10;
-  const [filteredPrice, setFilteredPrice] = useState([0, 1000]);
+  const [filterDropdown, setFilterDropdown] = useState(false);
+
+  const [filteredPrice, setFilteredPrice] = useState({ from: "", to: "" });
 
   useEffect(() => {
     const getProducts = async () => {
       const data = await fetchProducts(currentPage, perPage);
       setProducts(data.data || []);
+      setFilteredProducts(data.data || []);
       setMeta(data.meta || null);
       console.log(data.meta);
     };
@@ -25,12 +26,40 @@ const ProductList = () => {
     }
   }, [currentPage]);
 
+  const applyPriceFilter = () => {
+    const from = parseFloat(filteredPrice.from);
+    const to = parseFloat(filteredPrice.to);
+
+    const filtered = products.filter((product) => {
+      const price = parseFloat(product.price);
+      return (isNaN(from) || price >= from) && (isNaN(to) || price <= to);
+    });
+
+    setFilteredProducts(filtered);
+
+    setFilteredPrice({ from: "", to: "" });
+    setFilterDropdown(false);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    setFilterDropdown(false);
+    setFilteredPrice({ from: "", to: "" });
+  };
+
   return (
     <>
-    <PriceRangeFilter/>
+      <PriceRangeFilter
+        filteredPrice={filteredPrice}
+        setFilteredPrice={setFilteredPrice}
+        onApply={applyPriceFilter}
+        filterDropdown={filterDropdown}
+        setFilterDropdown={setFilterDropdown}
+      />
+
       <div className="flex flex-wrap gap-4 justify-center">
-        {products.map((product) => (
-          <div key={product.id} >
+        {filteredProducts.map((product) => (
+          <div key={product.id}>
             <img
               src={product.cover_image}
               style={{ width: "200px", height: "250px" }}
@@ -46,7 +75,7 @@ const ProductList = () => {
         <div className="flex items-center justify-center mt-4 space-x-2">
           {/**prev gilaki */}
           <button
-            onClick={() => setCurrentPage(currentPage - 1)}
+            onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
             Prev
@@ -66,7 +95,7 @@ const ProductList = () => {
           })}
           {/*next gilaki */}
           <button
-            onClick={() => setCurrentPage(currentPage + 1)}
+            onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === meta.last_page}
           >
             Next
