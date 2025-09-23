@@ -9,13 +9,15 @@ const PriceRangeFilter = ({filteredPrice, setFilteredPrice, onApply, filterDropd
   };
 
   return (
-    <div>
+    <div className="flex justify-between px-20">
+       <h2 className="my-3">Products</h2>
+      <div className="flex flex-col">
       <div className="flex items-center gap-2 mb-4 cursor-pointer">
         <AdjustmentsHorizontalIcon width={20} height={20} />
         <button onClick={handleFilterBtn}>Filter</button>
       </div>
       {filterDropdown && (
-        <div className="border border-zinc-200 p-4 rounded-md w-110">
+        <div className="border border-zinc-200 p-4 rounded-md w-80">
           <h3 className="my-2">Select price</h3>
           <div className="flex gap-2 mb-4">
             <input
@@ -23,7 +25,7 @@ const PriceRangeFilter = ({filteredPrice, setFilteredPrice, onApply, filterDropd
               onChange={(e) =>
                 setFilteredPrice({ ...filteredPrice, from: e.target.value })
               }
-              className="border border-zinc-200 p-2 rounded-md"
+              className="border border-zinc-200 p-2 rounded-md w-full"
               type="text"
               placeholder="From"
             />
@@ -33,7 +35,7 @@ const PriceRangeFilter = ({filteredPrice, setFilteredPrice, onApply, filterDropd
                 setFilteredPrice({ ...filteredPrice, to: e.target.value })
               }
               
-              className="border border-zinc-200 p-2 rounded-md"
+              className="border border-zinc-200 p-2 rounded-md w-full"
               type="text"
               placeholder="To"
             />
@@ -42,8 +44,10 @@ const PriceRangeFilter = ({filteredPrice, setFilteredPrice, onApply, filterDropd
             Apply
           </button>
         </div>
+        
       )}
-    </div>
+      </div>
+       </div>
   );
 };
 
