@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import fetchProducts from "./utils/fetchProducts";
 import Pagination from "./Pagination";
 import PriceRangeFilter from "./PriceRangeFilter";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import SortProducts from "./SortProducts";
-
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -59,19 +57,24 @@ const ProductList = () => {
 
   return (
     <>
-      <PriceRangeFilter
-        filteredPrice={filteredPrice}
-        setFilteredPrice={setFilteredPrice}
-        onApply={applyPriceFilter}
-        filterDropdown={filterDropdown}
-        setFilterDropdown={setFilterDropdown}
-      />
-      <SortProducts
-        sortingProducts={sortingProducts}
-        handleSortChange={handleSortChange}
-      />
+      <div className="flex justify-between px-20 my-6 items-center">
+        <h2 className="text-3xl font-bold">Products</h2>
+        <div className="flex gap-4">
+          <PriceRangeFilter
+            filteredPrice={filteredPrice}
+            setFilteredPrice={setFilteredPrice}
+            onApply={applyPriceFilter}
+            filterDropdown={filterDropdown}
+            setFilterDropdown={setFilterDropdown}
+          />
+          <SortProducts
+            sortingProducts={sortingProducts}
+            handleSortChange={handleSortChange}
+          />
+        </div>
+      </div>
 
-      <div className="grid grid-cols-3 gap-4 px-20 my-2">
+      <div className="grid grid-cols-3 gap-4 px-20 my-6">
         {filteredProducts.map((product) => (
           <div>
             <div
@@ -91,7 +94,11 @@ const ProductList = () => {
         ))}
       </div>
       {/*pagination*/}
-        <Pagination meta={meta} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <Pagination
+        meta={meta}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </>
   );
 };
