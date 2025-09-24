@@ -83,6 +83,8 @@ const ProductList = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+
+      
     </>
   );
 };
