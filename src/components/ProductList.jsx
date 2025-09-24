@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import fetchProducts from "./utils/fetchProducts";
 import PriceRangeFilter from "./PriceRangeFilter";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import SortProducts from "./SortProducts";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -13,9 +14,11 @@ const ProductList = () => {
 
   const [filteredPrice, setFilteredPrice] = useState({ from: "", to: "" });
 
+  const [sortingProducts, setSortingProducts] = useState("default");
+
   useEffect(() => {
     const getProducts = async () => {
-      const data = await fetchProducts(currentPage, perPage);
+      const data = await fetchProducts(currentPage, perPage, sortingProducts);
       setProducts(data.data || []);
       setFilteredProducts(data.data || []);
       setMeta(data.meta || null);
@@ -25,7 +28,7 @@ const ProductList = () => {
     {
       /*როცა currentPage შეიცვლება(კლიკზე), useEffect თავიდან გამოიძახებს API-s*/
     }
-  }, [currentPage]);
+  }, [currentPage, sortingProducts]);
 
   const applyPriceFilter = () => {
     const from = parseFloat(filteredPrice.from);
@@ -48,6 +51,10 @@ const ProductList = () => {
     setFilteredPrice({ from: "", to: "" });
   };
 
+  const handleSortChange = (e) => {
+    setSortingProducts(e.target.value);
+  };
+
   return (
     <>
       <PriceRangeFilter
@@ -56,6 +63,10 @@ const ProductList = () => {
         onApply={applyPriceFilter}
         filterDropdown={filterDropdown}
         setFilterDropdown={setFilterDropdown}
+      />
+      <SortProducts
+        sortingProducts={sortingProducts}
+        handleSortChange={handleSortChange}
       />
 
       <div className="grid grid-cols-3 gap-4 px-20 my-2">
@@ -76,7 +87,6 @@ const ProductList = () => {
             <p>$ {product.price}</p>
           </div>
         ))}
-        
       </div>
       {/*pagination*/}
       {meta && meta.last_page && (
@@ -87,7 +97,7 @@ const ProductList = () => {
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
-          <ChevronLeftIcon className="h-4 w-5 text-black"/>
+            <ChevronLeftIcon className="h-4 w-5 text-black" />
           </button>
           {/**გვერდები */}
           {Array.from({ length: meta.last_page }, (_, i) => {
@@ -109,7 +119,7 @@ const ProductList = () => {
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === meta.last_page}
           >
-            <ChevronRightIcon className="h-4 w-5 text-black"/>
+            <ChevronRightIcon className="h-4 w-5 text-black" />
           </button>
         </div>
       )}
