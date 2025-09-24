@@ -1,4 +1,7 @@
-const Pagination = ({meta, currentPage, setCurrentPage}) => {
+const Pagination = ({ meta, currentPage, setCurrentPage }) => {
+  if (!meta || !meta.last_page) return null;
+  return (
+    <>
       {meta && meta.last_page && (
         <div className="flex items-center justify-center mt-4 space-x-2">
           {/**prev gilaki */}
@@ -30,6 +33,9 @@ const Pagination = ({meta, currentPage, setCurrentPage}) => {
           </button>
         </div>
       )}
-}
+      ;
+    </>
+  );
+};
 
 export default Pagination;
