@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import fetchProducts from "./utils/fetchProducts";
+import Pagination from "./Pagination";
 import PriceRangeFilter from "./PriceRangeFilter";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import SortProducts from "./SortProducts";
+
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -89,40 +91,7 @@ const ProductList = () => {
         ))}
       </div>
       {/*pagination*/}
-      {meta && meta.last_page && (
-        <div className="flex items-center justify-center mt-4 space-x-2 pb-40 pt-20">
-          {/**prev gilaki */}
-          <button
-            className="cursor-pointer"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeftIcon className="h-4 w-5 text-black" />
-          </button>
-          {/**გვერდები */}
-          {Array.from({ length: meta.last_page }, (_, i) => {
-            const pageNumber = i + 1;
-            return (
-              <button
-                className="px-3 py-1 border rounded-md border-gray-300 hover:border-orange-500 hover:text-orange-500 cursor-pointer"
-                key={pageNumber}
-                onClick={() => setCurrentPage(pageNumber)}
-                disabled={currentPage === pageNumber}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-          {/*next gilaki */}
-          <button
-            className="cursor-pointer"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === meta.last_page}
-          >
-            <ChevronRightIcon className="h-4 w-5 text-black" />
-          </button>
-        </div>
-      )}
+        <Pagination meta={meta} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
     </>
   );
 };
