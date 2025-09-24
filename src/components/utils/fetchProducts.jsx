@@ -1,9 +1,12 @@
-const fetchProducts = async (currentPage, perPage) => {
+const fetchProducts = async (currentPage, perPage, sort = "default") => {
   try {
-    const products = await fetch(
-      `https://api.redseam.redberryinternship.ge/api/products?page=${currentPage}&per_page=${perPage}`
-    );
-    const data = await products.json();
+    let url = `https://api.redseam.redberryinternship.ge/api/products?page=${currentPage}&per_page=${perPage}`;
+
+    if (sort && sort !== "default") {
+      url += `&sort=${sort}`;
+    }
+    const res = await fetch(url);
+    const data = await res.json();
     return data;
   } catch (error) {
     console.error("ერრრრრრრრ", error);
