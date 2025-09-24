@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import fetchProducts from "./utils/fetchProducts";
 import Pagination from "./Pagination";
 import PriceRangeFilter from "./PriceRangeFilter";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import SortProducts from "./SortProducts";
-
+import ProductItem from "./ProductItem";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -59,39 +58,31 @@ const ProductList = () => {
 
   return (
     <>
-      <PriceRangeFilter
-        filteredPrice={filteredPrice}
-        setFilteredPrice={setFilteredPrice}
-        onApply={applyPriceFilter}
-        filterDropdown={filterDropdown}
-        setFilterDropdown={setFilterDropdown}
-      />
-      <SortProducts
-        sortingProducts={sortingProducts}
-        handleSortChange={handleSortChange}
-      />
-
-      <div className="grid grid-cols-3 gap-4 px-20 my-2">
-        {filteredProducts.map((product) => (
-          <div>
-            <div
-              className="border p-2 rounded-md border-gray-200 flex justify-center items-center flex-col"
-              key={product.id}
-            >
-              <img
-                className="w-full object-cover"
-                src={product.cover_image}
-                style={{ width: "200px", height: "250px" }}
-                alt={product.name}
-              />
-            </div>
-            <h3>{product.name}</h3>
-            <p>$ {product.price}</p>
-          </div>
-        ))}
+      <div className="flex justify-between px-20 my-6 items-center">
+        <h2 className="text-3xl font-bold">Products</h2>
+        <div className="flex gap-4">
+          <PriceRangeFilter
+            filteredPrice={filteredPrice}
+            setFilteredPrice={setFilteredPrice}
+            onApply={applyPriceFilter}
+            filterDropdown={filterDropdown}
+            setFilterDropdown={setFilterDropdown}
+          />
+          <SortProducts
+            sortingProducts={sortingProducts}
+            handleSortChange={handleSortChange}
+          />
+        </div>
       </div>
+
+      <ProductItem filteredProducts={filteredProducts}/>
+
       {/*pagination*/}
-        <Pagination meta={meta} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <Pagination
+        meta={meta}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </>
   );
 };

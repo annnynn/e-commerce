@@ -1,3 +1,5 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+
 const Pagination = ({meta, currentPage, setCurrentPage}) => {
       {meta && meta.last_page && (
         <div className="flex items-center justify-center mt-4 space-x-2">

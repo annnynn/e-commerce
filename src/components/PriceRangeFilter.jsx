@@ -14,46 +14,43 @@ const PriceRangeFilter = ({
   };
 
   return (
-    <div className="flex justify-between px-20">
-      <h2 className="my-3">Products</h2>
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2 mb-4 cursor-pointer">
-          <AdjustmentsHorizontalIcon width={20} height={20} />
-          <button onClick={handleFilterBtn}>Filter</button>
-        </div>
-        {filterDropdown && (
-          <div className="border border-zinc-200 p-4 rounded-md w-80">
-            <h3 className="my-2">Select price</h3>
-            <div className="flex gap-2 mb-4">
-              <input
-                value={filteredPrice.from}
-                onChange={(e) =>
-                  setFilteredPrice({ ...filteredPrice, from: e.target.value })
-                }
-                className="border border-zinc-200 p-2 rounded-md w-full"
-                type="text"
-                placeholder="From"
-              />
-              <input
-                value={filteredPrice.to}
-                onChange={(e) =>
-                  setFilteredPrice({ ...filteredPrice, to: e.target.value })
-                }
-                className="border border-zinc-200 p-2 rounded-md w-full"
-                type="text"
-                placeholder="To"
-              />
-            </div>
-            <button
-              onClick={onApply}
-              className="text-white px-8 py-2 border rounded-md bg-orange-600"
-            >
-              Apply
-            </button>
-          </div>
-        )}
+    <>
+      <div className="flex items-center gap-2 cursor-pointer">
+        <AdjustmentsHorizontalIcon width={20} height={20} />
+        <button className="cursor-pointer" onClick={handleFilterBtn}>Filter</button>
       </div>
-    </div>
+      {filterDropdown && (
+        <div className="border border-zinc-200 p-4 rounded-md w-80">
+          <h3 className="my-2">Select price</h3>
+          <div className="flex gap-2 mb-4">
+            <input
+              value={filteredPrice.from}
+              onChange={(e) =>
+                setFilteredPrice({ ...filteredPrice, from: e.target.value })
+              }
+              className="border border-zinc-200 p-2 rounded-md w-full"
+              type="text"
+              placeholder="From"
+            />
+            <input
+              value={filteredPrice.to}
+              onChange={(e) =>
+                setFilteredPrice({ ...filteredPrice, to: e.target.value })
+              }
+              className="border border-zinc-200 p-2 rounded-md w-full"
+              type="text"
+              placeholder="To"
+            />
+          </div>
+          <button
+            onClick={onApply}
+            className="text-white px-8 py-2 border rounded-md bg-orange-600"
+          >
+            Apply
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

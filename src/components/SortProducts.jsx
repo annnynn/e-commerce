@@ -1,7 +1,7 @@
 const SortProducts = ({sortingProducts, handleSortChange}) => {
     return (
         <div>
-                <select value={sortingProducts} onChange={handleSortChange}>
+                <select className="w-24 cursor-pointer" value={sortingProducts} onChange={handleSortChange}>
                     <option value="default">Sorting by</option>
                     <option value="-created_at">New products first</option>
                     <option value="price">Price, low to high</option>
