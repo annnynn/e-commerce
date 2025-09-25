@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import fetchProductDetails from "./utils/fetchProductDetails";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -169,11 +170,12 @@ const ProductDetails = () => {
           ))}
         </select>
 
-        
-        <button className="bg-orange-600 text-[#FFFFFF] text-[18px] font-medium w-[704px] h-[59px] border rounded-[10px] cursor-pointer mt-[56px] items-center flex justify-center">
-          <ShoppingCartIcon className="w-[24px] h-[24px] inline-block mr-1.5" />
-          <span>Add to Cart</span>
-        </button>
+        <Link to={`/products/cart`}>
+          <button className="bg-orange-600 text-[#FFFFFF] text-[18px] font-medium w-[704px] h-[59px] border rounded-[10px] cursor-pointer mt-[56px] items-center flex justify-center">
+            <ShoppingCartIcon className="w-[24px] h-[24px] inline-block mr-1.5" />
+            <span>Add to Cart</span>
+          </button>
+        </Link>
         <hr className="w-full border border-[#E1DFE1] mt-[56px] mb-[56px]" />
 
         <div className="flex gap-5 justify-between items-center">
