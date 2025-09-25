@@ -52,7 +52,7 @@ const ProductDetails = () => {
         </div>
       </div>
       <div className="flex flex-col w-[704px] rounded-md">
-        <h1 className="font-semibold text-[32px]">{name}</h1>
+        <h1 className="font-semibold text-[32px] capitalize">{name}</h1>
         <h2 className="font-semibold text-[32px] mt-[21px] mb-[56px]">
           $ {price}
         </h2>
@@ -62,7 +62,10 @@ const ProductDetails = () => {
           <div className="flex gap-3">
             {available_colors.map((color) => (
               <div className="flex" key={color}>
-                <button className="gap-2 cursor-pointer ">{color}</button>
+                <div
+                  className="border border-gray-200 rounded-full w-[38px] h-[38px]"
+                  style={{ backgroundColor: color }}
+                ></div>
               </div>
             ))}
           </div>
@@ -100,7 +103,7 @@ const ProductDetails = () => {
         <hr className="w-full border border-[#E1DFE1] mt-[56px] mb-[56px]" />
 
         <div className="flex gap-5 justify-between items-center">
-          <h2 className="my-4 font-medium text-[20px]">Details</h2>
+          <h2 className="mt-[4px] font-medium text-[20px]">Details</h2>
           <img src={brandLogo} className="w-23 h-15" />
         </div>
         <div>
