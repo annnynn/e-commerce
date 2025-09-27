@@ -1,33 +1,64 @@
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { checkValidData } from "../utils/validate";
 
 const Login = () => {
   const [isLoginForm, setisLoginForm] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState({});
 
   const email = useRef(null);
   const password = useRef(null);
   const confirmPassword = useRef(null);
   const userName = useRef(null);
 
-  const handleBtnClick = () => {
-    //აქ ინება ვალიდაცია
-    console.log(email.current.value);
-    console.log(password.current.value);
+  const handleBtnClick = async () => {
+    // console.log(email.current.value);
+    // console.log(password.current.value);
 
-    const message = checkValidData(
-      email.current?.value,
-      password.current?.value,
-      confirmPassword.current?.value,
-      userName.current?.value
-    );
+    const message = checkValidData({
+      email: email.current?.value,
+      password: password.current?.value,
+      confirmPassword: confirmPassword.current?.value,
+      userName: userName.current?.value,
+    });
 
-    setErrorMessage(message);
+    setErrorMessage(message || {});
+    console.log(errorMessage);
 
-    // tu validuri ikenba log in / registration
+    if (message) return;
+
+    const formData = new FormData();
+    formData.append("email", email.current?.value);
+    formData.append("password", password.current?.value);
+    formData.append("password_confirmation", confirmPassword.current?.value);
+    formData.append("username", userName.current?.value);
+
+    if (!isLoginForm) {
+      try {
+        const response = await fetch("https://api.redseam.redberryinternship.ge/api/register", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("Successful registration");
+          localStorage.setItem("token", data.token);
+          console.log("Token:", data.token);
+        } else if (response.status === 422) {
+          console.log("Validation error", data.errors);
+          setErrorMessage(data.errors);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      return;
+    }
   };
-
   console.log(isLoginForm);
   const toggleRegisterForm = () => {
     setisLoginForm(!isLoginForm);
@@ -48,51 +79,88 @@ const Login = () => {
             </h1>
 
             {!isLoginForm && (
-              <input
-                ref={userName}
-                className="w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] mt-[48px]"
-                type="text"
-                name="userName"
-                id="userName"
-                placeholder="Username"
-              />
+              <>
+                <input
+                  ref={userName}
+                  className={`w-full h-[42px] rounded-[8px] pl-[12px] mt-[48px] border ${
+                    errorMessage.userName
+                      ? "border-[#FF4000]"
+                      : "border-[#E1DFE1]"
+                  }`}
+                  type="text"
+                  name="userName"
+                  id="userName"
+                  placeholder="Username"
+                />
+                {errorMessage.userName && (
+                  <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                    {errorMessage.userName}
+                  </p>
+                )}
+              </>
             )}
 
-            <input
-              className={`w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] ${
-                !isLoginForm ? "mt-[24px]" : "mt-[48px]"
-              }`}
-              ref={email}
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Email"
-            />
+            <>
+              <input
+                className={`w-full h-[42px] rounded-[8px] pl-[12px] border ${
+                  errorMessage.email ? "border-[#FF4000]" : "border-[#E1DFE1]"
+                }  
+                  ${!isLoginForm ? "mt-[24px]" : "mt-[48px]"}`}
+                ref={email}
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email"
+              />
+              {errorMessage.email && (
+                <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                  {errorMessage.email}
+                </p>
+              )}
+            </>
 
-            <input
-              ref={password}
-              className="w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] mt-[24px]"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-            />
-
-            <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
-              {errorMessage}
-            </p>
+            <>
+              <input
+                ref={password}
+                className={`w-full h-[42px] rounded-[8px] pl-[12px] mt-[24px] border ${
+                  errorMessage.password
+                    ? "border-[#FF4000]"
+                    : "border-[#E1DFE1]"
+                }`}
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+              />
+              {errorMessage.password && (
+                <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                  {errorMessage.password}
+                </p>
+              )}
+            </>
 
             {!isLoginForm && (
-              <input
-                className={`w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] mt-[24px] ${
-                  !isLoginForm ? "mb-[0px]" : "mb-[46px]"
-                }`}
-                ref={confirmPassword}
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                placeholder="Confirm password"
-              />
+              <>
+                <input
+                  className={`w-full h-[42px] border rounded-[8px] pl-[12px] mt-[24px] ${
+                    errorMessage.confirmPassword
+                      ? "border-[#FF4000]"
+                      : "border-[#E1DFE1]"
+                  }
+                    
+                    ${!isLoginForm ? "mb-[0px]" : "mb-[46px]"}`}
+                  ref={confirmPassword}
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  placeholder="Confirm password"
+                />
+                {errorMessage.confirmPassword && (
+                  <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                    {errorMessage.confirmPassword}
+                  </p>
+                )}
+              </>
             )}
             <button
               onClick={handleBtnClick}

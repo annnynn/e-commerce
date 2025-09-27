@@ -1,20 +1,37 @@
-export const checkValidData = (email, password, userName) => {
-  const validateEmail = String(email || "").trim();
-  const validatePassword = String(password || "").trim();
-  const validateUserName = String(userName || "").trim();
+export const checkValidData = ({ email, password, confirmPassword, userName }) => {
+  const errors = {};
 
   const isEmailValid = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(
     email
   );
 
-  if (!validateEmail) return "Email is required";
-  if (validateEmail.length < 3)
-    return "Email must contain at least 3 characters";
-  if (!isEmailValid) return "Email is not valid";
+  //უნდა იტოს უნიკალური
 
-  if (!validatePassword) return "Password is required";
-  if (validatePassword.length < 3)
-    return "Password must contain at least 3 characters";
+  if (!email) {
+    errors.email = "Email is required";
+  } else if (email.trim().length < 3) {
+    errors.email = "Email must contain at least 3 characters";
+  } else if (!isEmailValid) {
+    errors.email = "Invalid email format";
+  }
+
+  if(!password){
+    errors.password = "Password can't be empty"
+  }else if(password.trim().length < 3){
+    errors.password = "Password must be at least 3 characters"
+  }
+
+
+  // უნდა იყოს უნიკალური
+  if(!userName){
+    errors.userName = "Username can't be empty"
+  }else if(userName.trim().length < 3){
+    errors.userName = "Username must be at least 3 characters";
+  }
+
+  if(confirmPassword !== password){
+    errors.confirmPassword = "Password is not matching"
+  }
 
   {
     /**
@@ -25,7 +42,9 @@ export const checkValidData = (email, password, userName) => {
     */
   }
 
-  {/**Avatar -ის ატვირთვის შემთხვევაში აპლიკაცია უნდა აჩვენებდეს მის პრევიუს (preview). */}
+  {
+    /**Avatar -ის ატვირთვის შემთხვევაში აპლიკაცია უნდა აჩვენებდეს მის პრევიუს (preview). */
+  }
 
-  return null;
+  return Object.keys(errors).length > 0 ? errors : null;
 };
