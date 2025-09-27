@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
 import { checkValidData } from "../utils/validate";
+import { registerUser, loginUser } from "../auth/authServie";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [isLoginForm, setisLoginForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState({});
 
@@ -19,6 +23,7 @@ const Login = () => {
       password: password.current?.value,
       confirmPassword: confirmPassword.current?.value,
       userName: userName.current?.value,
+      mode: isLoginForm ? "login" : "register",
     });
 
     setErrorMessage(message || {});
@@ -32,9 +37,39 @@ const Login = () => {
     // avatar
     formData.append("password", password.current?.value);
     formData.append("password_confirmation", confirmPassword.current?.value);
-    
+
+    if (!isLoginForm) {
+      try {
+        const response = await registerUser(formData);
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem("token", data.token);
+          console.log(data.token);
+          navigate("/login");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await loginUser(
+          email.current?.value,
+          password.current?.value
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("redirect productlist oage");
+        } else {
+          setErrorMessage(data.errors || {});
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
-  console.log(isLoginForm);
+
   const toggleRegisterForm = () => {
     setisLoginForm(!isLoginForm);
     console.log(isLoginForm);
@@ -167,5 +202,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

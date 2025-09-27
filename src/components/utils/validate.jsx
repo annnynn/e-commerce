@@ -1,4 +1,4 @@
-export const checkValidData = ({ email, password, confirmPassword, userName }) => {
+export const checkValidData = ({ email, password, confirmPassword, userName, mode}) => {
   const errors = {};
 
   const isEmailValid = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(
@@ -21,7 +21,7 @@ export const checkValidData = ({ email, password, confirmPassword, userName }) =
     errors.password = "Password must be at least 3 characters"
   }
 
-
+if(mode === "register"){
   // უნდა იყოს უნიკალური
   if(!userName){
     errors.userName = "Username can't be empty"
@@ -45,6 +45,6 @@ export const checkValidData = ({ email, password, confirmPassword, userName }) =
   {
     /**Avatar -ის ატვირთვის შემთხვევაში აპლიკაცია უნდა აჩვენებდეს მის პრევიუს (preview). */
   }
-
+}
   return Object.keys(errors).length > 0 ? errors : null;
 };
