@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Cart from "./components/Cart";
 import Header from "./components/Header";
 import Login from "./components/auth/Login"
+import Register from "./components/auth/Register"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/products/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );

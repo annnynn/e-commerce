@@ -1,12 +1,30 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-const Login = () => {
-  const [isLoginForm, setisLoginForm] = useState(true);
+import { useRef, useState } from "react";
+import { loginUser } from "../auth/authServie";
+import { useNavigate, Link } from "react-router-dom";
 
-  console.log(isLoginForm);
-  const toggleRegisterForm = () => {
-    setisLoginForm(!isLoginForm);
-    console.log(isLoginForm);
+const Login = () => {
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState({});
+
+  const email = useRef(null);
+  const password = useRef(null);
+
+  const handleLogin = async () => {
+    try {
+      const response = await loginUser(
+        email.current.value,
+        password.current.value
+      );
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else {
+        setErrorMessage(data.errors || {});
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -17,71 +35,54 @@ const Login = () => {
 
       <div className="ml-[173px] my-[246px]">
         <div className="w-[554px] h-[240px]">
-          <form>
-            <h1 className="text-[42px] font-semibold">
-              {!isLoginForm ? "Register" : "Log in"}
-            </h1>
-
-            {!isLoginForm && (
-              <input
-                className="w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] mt-[48px]"
-                type="text"
-                name="userName"
-                id="userName"
-                placeholder="Username"
-              />
-            )}
+          <form onSubmit={(e) => e.preventDefault()}>
+            <h1 className="text-[42px] font-semibold">Log in</h1>
 
             <input
-              className={`w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] ${
-                !isLoginForm ? "mt-[24px]" : "mt-[48px]"
-              }`}
+              ref={email}
               type="email"
               name="email"
-              id="email"
               placeholder="Email"
+              className={`w-full h-[42px] rounded-[8px] pl-[12px] border mt-[24px] ${
+                errorMessage.email ? "border-[#FF4000]" : "border-[#E1DFE1]"
+              }`}
             />
+            {errorMessage.email && (
+              <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                {errorMessage.email}
+              </p>
+            )}
 
             <input
-              className="w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] mt-[24px]"
+              ref={password}
               type="password"
               name="password"
-              id="password"
               placeholder="Password"
+              className={`w-full h-[42px] rounded-[8px] pl-[12px] mt-[24px] border ${
+                errorMessage.password ? "border-[#FF4000]" : "border-[#E1DFE1]"
+              }`}
             />
-
-            {!isLoginForm && (
-              <input
-                className={`w-full h-[42px] border border-[#E1DFE1] rounded-[8px] pl-[12px] mt-[24px] ${
-                  !isLoginForm ? "mb-[0px]" : "mb-[46px]"
-                }`}
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                placeholder="Confirm password"
-              />
+            {errorMessage.password && (
+              <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                {errorMessage.password}
+              </p>
             )}
-            <button className="w-full h-[41px] bg-orange-600 text-[#FFFFFF] rounded-[10px] mt-[46px]">
-              {!isLoginForm ? "Register" : "Log in"}
+
+            <button
+              onClick={handleLogin}
+              className="w-full h-[41px] bg-orange-600 text-[#FFFFFF] rounded-[10px] mt-[46px]"
+            >
+              Log in
             </button>
           </form>
+
           <div className="mt-[26px] text-center">
-            <p
-              className="text-[#3E424A] text-[14px] cursor-pointer"
-              onClick={toggleRegisterForm}
-            >
-              {!isLoginForm ? (
-                <>
-                  <span>Already member?</span>
-                  <span className="text-[#FF4000] ml-[8px]">Log in</span>
-                </>
-              ) : (
-                <>
-                  <span>Not a member?</span>
-                  <span className="text-[#FF4000] ml-[8px]">Register</span>
-                </>
-              )}
-            </p>
+            <span className="text-[#3E424A] text-[14px] cursor-pointer">
+              Not a member?
+            </span>
+            <Link to="/register" className="text-[#FF4000] ml-[8px]">
+              Register
+            </Link>
           </div>
         </div>
       </div>
