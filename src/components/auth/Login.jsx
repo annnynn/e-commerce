@@ -28,36 +28,11 @@ const Login = () => {
 
     const formData = new FormData();
     formData.append("email", email.current?.value);
+    formData.append("username", userName.current?.value);
+    // avatar
     formData.append("password", password.current?.value);
     formData.append("password_confirmation", confirmPassword.current?.value);
-    formData.append("username", userName.current?.value);
-
-    if (!isLoginForm) {
-      try {
-        const response = await fetch("https://api.redseam.redberryinternship.ge/api/register", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-          },
-          body: formData,
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          console.log("Successful registration");
-          localStorage.setItem("token", data.token);
-          console.log("Token:", data.token);
-        } else if (response.status === 422) {
-          console.log("Validation error", data.errors);
-          setErrorMessage(data.errors);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      return;
-    }
+    
   };
   console.log(isLoginForm);
   const toggleRegisterForm = () => {
