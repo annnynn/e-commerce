@@ -16,7 +16,7 @@ export const checkValidData = ({ email, password, confirmPassword, userName, mod
   }
 
   if(!password){
-    errors.password = "Password can't be empty"
+    errors.password = "Password is required"
   }else if(password.trim().length < 3){
     errors.password = "Password must be at least 3 characters"
   }
@@ -24,13 +24,15 @@ export const checkValidData = ({ email, password, confirmPassword, userName, mod
 if(mode === "register"){
   // უნდა იყოს უნიკალური
   if(!userName){
-    errors.userName = "Username can't be empty"
+    errors.userName = "Username field is required"
   }else if(userName.trim().length < 3){
     errors.userName = "Username must be at least 3 characters";
   }
 
-  if(confirmPassword !== password){
-    errors.confirmPassword = "Password is not matching"
+  if(!confirmPassword){
+    errors.confirmPassword = "Confirm password field is required"
+  }else if(confirmPassword !== password){
+     errors.confirmPassword = "Password is not maching"
   }
 
   {
