@@ -17,7 +17,7 @@ const Header = () => {
           <>
             <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
               <img
-                src={avatarUrl || "/avatar.png"}
+                src={avatarUrl || "/avatar.jpg"}
                 alt="User Avatar"
                 className="w-full h-full object-cover"
               />
