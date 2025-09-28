@@ -3,9 +3,13 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import fetchProductDetails from "./utils/fetchProductDetails";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {addItem} from "./utils/cartSlice"
+
 
 const ProductDetails = () => {
+  const dispatch = useDispatch();
+
   const { id } = useParams();
   const [productDetails, setProductDetails] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -80,8 +84,23 @@ const ProductDetails = () => {
     }
   };
 
-  console.log(currentColorIndex);
 
+
+  const handleAddItem = () => {
+    const item = {
+      name,
+      price,
+      color: selectedColor,
+      size: selectedSize,
+      quantity: Number(quantity),
+      image: currentColorIndex !== null ? images[currentColorIndex] : cover_image,
+    }
+
+     dispatch(addItem(item))
+      console.log(item);
+  }
+
+ 
   return (
     <div className="flex justify-between p-[100px]">
       <div className="flex gap-24">
@@ -169,13 +188,10 @@ const ProductDetails = () => {
             </option>
           ))}
         </select>
-
-        <Link to={`/products/cart`}>
-          <button className="bg-orange-600 text-[#FFFFFF] text-[18px] font-medium w-[704px] h-[59px] border rounded-[10px] cursor-pointer mt-[56px] items-center flex justify-center">
+          <button onClick={() => handleAddItem(currentColorIndex)} className="bg-orange-600 text-[#FFFFFF] text-[18px] font-medium w-[704px] h-[59px] border rounded-[10px] cursor-pointer mt-[56px] items-center flex justify-center">
             <ShoppingCartIcon className="w-[24px] h-[24px] inline-block mr-1.5" />
             <span>Add to Cart</span>
           </button>
-        </Link>
         <hr className="w-full border border-[#E1DFE1] mt-[56px] mb-[56px]" />
 
         <div className="flex gap-5 justify-between items-center">

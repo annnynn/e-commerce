@@ -2,7 +2,8 @@ import { ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useContext} from "react";
 import UserContext from "./utils/User";
-
+import Cart from "./Cart"
+import { useSelector } from "react-redux";
 
 const Header = () => {
 
@@ -11,6 +12,7 @@ const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
 const token = localStorage.getItem("token");
 const storedAvatarUrl = localStorage.getItem("avatarUrl");
+const [cartSlider, setCartSlider] = useState(false);
 
  useEffect(() => {
     if (token && !loggedInUser) {
@@ -31,6 +33,13 @@ const storedAvatarUrl = localStorage.getItem("avatarUrl");
     setIsDropdownOpen(false);
   }
 
+  const handleCartSlider = () => {
+        setCartSlider(prev => !prev);
+  }
+
+  const cartItems = useSelector((store) => store.cart.items);
+  console.log(cartItems);
+
   return (
     <div className="flex justify-between items-center p-4 border-b border-gray-200">
       <div className="flex items-center gap-2 cursor-pointer">
@@ -41,7 +50,7 @@ const storedAvatarUrl = localStorage.getItem("avatarUrl");
       <div className="flex items-center gap-4">
         {loggedInUser ?(
           <>
-              <ShoppingCartIcon className="w-6 h-6 cursor-pointer text-gray-700" />
+              <ShoppingCartIcon onClick={handleCartSlider} className="w-6 h-6 cursor-pointer text-gray-700" />
             <div className="w-[40px] h-[40px] rounded-full">
               <img
                 onClick={toggleDropDown}
@@ -66,6 +75,8 @@ const storedAvatarUrl = localStorage.getItem("avatarUrl");
           </div>
         )}
       </div>
+      {cartSlider && <Cart handleCartSlider={handleCartSlider} cartItems={cartItems}/>}
+      
     </div>
   );
 };
