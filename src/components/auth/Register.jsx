@@ -41,7 +41,7 @@ const Register = () => {
     if (message) return;
 
     if (avatarFile) {
-      formData.append("avatar", avatarFile); 
+      formData.append("avatar", avatarFile);
     }
 
     const formData = new FormData();
@@ -56,6 +56,12 @@ const Register = () => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         console.log(data.token);
+
+        if (data.user?.profile_photo) {
+          localStorage.setItem("avatarUrl", data.user.profile_photo);
+        } else if (avatarPreview) {
+          localStorage.setItem("avatarUrl", avatarPreview);
+        }
         navigate("/login");
       } else {
         setErrorMessage(data.errors);
