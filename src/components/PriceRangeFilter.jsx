@@ -20,7 +20,7 @@ const PriceRangeFilter = ({
         <button className="cursor-pointer" onClick={handleFilterBtn}>Filter</button>
       </div>
       {filterDropdown && (
-        <div className="border border-zinc-200 p-4 rounded-md w-80">
+        <div className=" absolute border border-zinc-200 p-4 rounded-md w-80 my-10 mx-[-250px] bg-white shadow-lg">
           <h3 className="my-2">Select price</h3>
           <div className="flex gap-2 mb-4">
             <input
@@ -44,7 +44,7 @@ const PriceRangeFilter = ({
           </div>
           <button
             onClick={onApply}
-            className="text-white px-8 py-2 border rounded-md bg-orange-600"
+            className="text-white px-8 py-2 border rounded-md bg-orange-600 cursor-pointer"
           >
             Apply
           </button>
