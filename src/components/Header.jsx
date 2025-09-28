@@ -42,7 +42,7 @@ const [cartSlider, setCartSlider] = useState(false);
   console.log(cartItems);
 
   return (
-    <div className="flex justify-between items-center p-4 border-b border-gray-200">
+    <div className="flex justify-between items-center p-4 border-b border-gray-200 relative">
       <div className="flex items-center gap-2 cursor-pointer">
         <img src="/Vector.svg" alt="Logo" />
         <h1>RedSeam Clothing</h1>
@@ -76,7 +76,11 @@ const [cartSlider, setCartSlider] = useState(false);
           </div>
         )}
       </div>
-      {cartSlider && <Cart handleCartSlider={handleCartSlider} cartItems={cartItems}/>}
+     {cartSlider && (
+        <div className="fixed top-0 right-0 w-[540px] h-full bg-[#F8F6F7] overflow-auto">
+         <Cart handleCartSlider={handleCartSlider} cartItems={cartItems} />
+        </div>
+)}
       
     </div>
   );

@@ -23,7 +23,7 @@ const Cart = ({handleCartSlider}) => {
 
   return (
     <>
-      <div className="m-auto w-[540px] border border-gray-400 p-10 rounded-md">
+      <div className="m-auto w-[540px] h-full border border-gray-400 p-10 rounded-md">
         <div className="bg-[#F8F6F7] flex justify-between items-center mb-[63px]">
           <h1 className="text-3xl font-medium text-[20px]">Shopping cart {cartItems.length}</h1>
           <XMarkIcon onClick={handleCartSlider} className="cursor-pointer w-[18px] h-[18px] text-[#10151F]" />
@@ -39,7 +39,7 @@ const Cart = ({handleCartSlider}) => {
                   key={item.id}
                   className="flex"
                 >
-                  <div className="flex justify-between gap-4 w-[460px] mt-[10px]">
+                  <div className="flex justify-between gap-4 w-[460px]">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -82,7 +82,7 @@ const Cart = ({handleCartSlider}) => {
           )}
           </div>
           
-        <div className="mt-[331px] mb-[40px]">
+        <div className="mt-[200px] mb-[40px]">
             <div className="flex justify-between">
                 <span>Items subtotal</span>
                 <span> ${itemsSubtotal.toFixed(2)}</span>
