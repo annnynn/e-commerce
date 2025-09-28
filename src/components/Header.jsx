@@ -1,9 +1,23 @@
 import { ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const token = localStorage.getItem("token");
-  const avatarUrl = localStorage.getItem("avatarUrl");
+  const [token, setToken] = useState();
+  const [avatar, setAvatar] = useState();
+
+  useEffect(() => {
+    const userToken = localStorage.getItem("token");
+    const avatarUrl = localStorage.getItem("avatarUrl");
+
+    setToken(userToken);
+    setAvatar(avatarUrl);
+  }, [token, avatar]);
+  const logout = () => {
+    if (token) {
+      localStorage.removeItem("token");
+    }
+  };
 
   return (
     <div className="flex justify-between items-center p-4">
@@ -13,11 +27,11 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        {token ? (
+        {token !== null ? (
           <>
             <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
               <img
-                src={avatarUrl || "/avatar.jpg"}
+                src={avatar || "/avatar.jpg"}
                 alt="User Avatar"
                 className="w-full h-full object-cover"
               />
@@ -26,10 +40,13 @@ const Header = () => {
             <Link to="/cart">
               <ShoppingCartIcon className="w-6 h-6 cursor-pointer text-gray-700" />
             </Link>
+
+            <button onClick={logout}>logout</button>
           </>
         ) : (
           <div className="flex items-center gap-1 cursor-pointer">
             <UserIcon className="w-[20px] h-[20px]" />
+
             <Link to="/login">
               <button className="cursor-pointer">Log in</button>
             </Link>

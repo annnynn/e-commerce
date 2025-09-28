@@ -16,11 +16,26 @@ const Login = () => {
         password.current.value
       );
       const data = await response.json();
+      console.log(data);
+
       if (response.ok) {
         localStorage.setItem("token", data.token);
         navigate("/");
+        setErrorMessage({});
       } else {
-        setErrorMessage(data.errors || {});
+        const errors = {};
+
+        if (data.errors) {
+          Object.keys(data.errors).forEach((key) => {
+            errors[key] = data.errors[key][0];
+          });
+        }
+
+        if (response.status === 401 && data.message) {
+          errors.general = data.message;
+        }
+
+        setErrorMessage(errors);
       }
     } catch (error) {
       console.log(error);
@@ -68,6 +83,17 @@ const Login = () => {
               </p>
             )}
 
+            {email && password == null && errorMessage.general && (
+              <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                {errorMessage.general}
+              </p>
+            )}
+
+            {errorMessage.general && (
+              <p className="text-[10px] text-[#FF4000] mt-[4px] ml-[6px]">
+                {errorMessage.general}
+              </p>
+            )}
             <button
               onClick={handleLogin}
               className="w-full h-[41px] bg-orange-600 text-[#FFFFFF] rounded-[10px] mt-[46px]"
