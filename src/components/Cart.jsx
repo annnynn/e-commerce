@@ -34,9 +34,9 @@ const Cart = ({handleCartSlider}) => {
             <p>Your cart is empty</p>
           ) : (
             <div>
-              {cartItems.map((item, index) => (
+              {cartItems.map((item) => (
                 <div
-                  key={index}
+                  key={item.id}
                   className="flex"
                 >
                   <div className="flex justify-between gap-4 w-[460px] mt-[10px]">
@@ -68,7 +68,11 @@ const Cart = ({handleCartSlider}) => {
                           +
                         </button>
                      </div>
-                      <button>Remove</button>
+                      <button onClick={() => { 
+                         console.log(item.id);
+                        dispatch(removeItem(item.id))
+                        
+                        }}>Remove</button>
                       </div>
                     </div>
                   </div>

@@ -88,6 +88,7 @@ const ProductDetails = () => {
 
   const handleAddItem = () => {
     const item = {
+      id: productDetails.id,
       name,
       price,
       color: selectedColor,

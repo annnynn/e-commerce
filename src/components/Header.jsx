@@ -28,6 +28,7 @@ const [cartSlider, setCartSlider] = useState(false);
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("avatarUrl");
+    localStorage.removeItem('cart');
 
     setUser(null, null);
     setIsDropdownOpen(false);
