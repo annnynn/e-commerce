@@ -31,7 +31,14 @@ const Cart = ({handleCartSlider}) => {
 
        <div>
           {cartItems.length === 0 ? (
-            <p>Your cart is empty</p>
+            <div className="flex flex-col text-center gap-2">
+            
+            <img className="w-[170px] h-[135px] object-contain ml-[165px]" src="/emptycard.png"/>
+            <h2>Ooops!</h2>
+              <p>You’ve got nothing in your cart just yet...</p>
+              <button className="bg-orange-600 text-[#FFFFFF] text-[18px] font-medium w-full h-[59px] border rounded-[10px] cursor-pointer mt-[102px] items-center flex justify-center">Start shopping</button>
+              {/**redirect to productssss */}
+            </div>
           ) : (
             <div>
               {cartItems.map((item) => (
@@ -81,8 +88,10 @@ const Cart = ({handleCartSlider}) => {
             </div>
           )}
           </div>
-          
-        <div className="mt-[200px] mb-[40px]">
+      
+      {cartItems.length !== 0 ? (  
+
+ <div className="mt-[200px] mb-[40px]">
             <div className="flex justify-between">
                 <span>Items subtotal</span>
                 <span> ${itemsSubtotal.toFixed(2)}</span>
@@ -99,6 +108,13 @@ const Cart = ({handleCartSlider}) => {
                 <span>Go to checkout</span>
             </button>
         </div>
+
+
+
+      ):(
+      <></>
+    )}
+       
        
       </div>
     </>
