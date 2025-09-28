@@ -6,11 +6,15 @@ const Header = () => {
   const avatarUrl = localStorage.getItem("avatarUrl");
 
   return (
+
     <div className="flex justify-between items-center p-4">
+    <div className="flex justify-between py-[29px] px-[100px] text-center">
+
       <div className="flex items-center gap-2 cursor-pointer">
         <img src="/Vector.svg" alt="Logo" />
         <h1>RedSeam Clothing</h1>
       </div>
+
 
       <div className="flex items-center gap-4">
         {token ? (
@@ -35,6 +39,12 @@ const Header = () => {
             </Link>
           </div>
         )}
+
+      <div className="flex cursor-pointer">
+        <UserIcon className="w-[13.23px] h-[16px] mt-[2px]"/>
+        <Link to="/login">
+          <button className="cursor-pointer text-[12px] ml-[8px]">Log in</button>
+        </Link>
       </div>
     </div>
   );
