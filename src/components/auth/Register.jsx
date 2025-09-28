@@ -1,9 +1,13 @@
 import { registerUser } from "./authServie";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkValidData } from "../utils/validate";
+import UserContext from "../utils/User";
 
 const Register = () => {
+
+  const {setUser} = useContext(UserContext);
+
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState({});
   const [avatarPreview, setAvatarPreview] = useState("/avatar.jpg");
@@ -24,7 +28,7 @@ const Register = () => {
 
   const handleRemoveAvatar = () => {
     setAvatarFile(null);
-    setAvatarPreview("/avatar.jpg"); // default avatar
+    setAvatarPreview("/avatar.jpg"); 
   };
 
   const handleRegister = async () => {
@@ -55,12 +59,16 @@ const Register = () => {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
+         localStorage.setItem("avatarUrl", avatarPreview);
 
         if (data.user?.profile_photo) {
           localStorage.setItem("avatarUrl", data.user.profile_photo);
+          
         } else {
           localStorage.setItem("avatarUrl", avatarPreview);
         }
+
+        setUser(data.user?.username, avatarFile);
 
         navigate("/login");
       } else {

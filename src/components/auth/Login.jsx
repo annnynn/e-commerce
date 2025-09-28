@@ -9,7 +9,8 @@ const Login = () => {
   const email = useRef(null);
   const password = useRef(null);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       const response = await loginUser(
         email.current.value,
@@ -20,6 +21,7 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        
         navigate("/");
         setErrorMessage({});
       } else {
@@ -95,6 +97,7 @@ const Login = () => {
               </p>
             )}
             <button
+              type="submit"
               onClick={handleLogin}
               className="w-full h-[41px] bg-orange-600 text-[#FFFFFF] rounded-[10px] mt-[46px]"
             >
