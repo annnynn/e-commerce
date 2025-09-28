@@ -25,7 +25,7 @@ const Cart = ({handleCartSlider}) => {
     <>
       <div className="m-auto w-[540px] h-full border border-gray-400 p-10 rounded-md">
         <div className="bg-[#F8F6F7] flex justify-between items-center mb-[63px]">
-          <h1 className="text-3xl font-medium text-[20px]">Shopping cart {cartItems.length}</h1>
+          <h1 className="text-3xl font-medium text-[20px]">Shopping cart ({cartItems.length})</h1>
           <XMarkIcon onClick={handleCartSlider} className="cursor-pointer w-[18px] h-[18px] text-[#10151F]" />
         </div>
 
