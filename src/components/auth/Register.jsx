@@ -7,6 +7,21 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState({});
+  const [avatarPreview, setAvatarPreview] = useState("/avatar.jpg");
+  const [avatarFile, setAvatarFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRemoveAvatar = () => {
+    setAvatarFile(null);
+    setAvatarPreview("/avatar.jpg"); // დაააბრუნდება დეფაულთზე
+  };
 
   const email = useRef(null);
   const password = useRef(null);
@@ -24,6 +39,10 @@ const Register = () => {
 
     setErrorMessage(message || {});
     if (message) return;
+
+    if (avatarFile) {
+      formData.append("avatar", avatarFile); 
+    }
 
     const formData = new FormData();
     formData.append("email", email.current.value);
@@ -52,10 +71,41 @@ const Register = () => {
         <img src="/registerImg.png" />
       </div>
 
-      <div className="ml-[173px] my-[246px]">
+      <div className="ml-[173px] my-[152px]">
         <div className="w-[554px] h-[240px]">
           <form onSubmit={(e) => e.preventDefault()}>
-            <h1 className="text-[42px] font-semibold">Register</h1>
+            <h1 className="text-[42px] font-semibold mb-[48px]">
+              Registration
+            </h1>
+            {/**ფოტოს ატვირთვა */}
+            <div className="flex items-center text-center text-[#3E424A]">
+              <div>
+                <img
+                  src={avatarPreview}
+                  alt="Avatar Preview"
+                  // ამის მარჯინი მოსაკლები იქნება რეგისტრაიციის მარჯინზე
+                  className="w-[100px] h-[100px] rounded-full object-cover"
+                />
+              </div>
+              <div>
+                <input
+                  type="file"
+                  id="avatar"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+
+                <label htmlFor="avatar" className="mx-[15px]">
+                  Upload new
+                </label>
+              </div>
+              <div>
+                <button type="button" onClick={handleRemoveAvatar}>
+                  Remove
+                </button>
+              </div>
+            </div>
 
             <>
               <input
